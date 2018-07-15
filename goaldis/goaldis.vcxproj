@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -15,7 +15,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -45,13 +45,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="compression.cpp" />
     <ClCompile Include="disasm.cpp" />
     <ClCompile Include="link.cpp" />
     <ClCompile Include="machine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meta.cpp" />
+    <ClCompile Include="minilzo.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="compression.h" />
+    <ClInclude Include="lzoconf.h" />
+    <ClInclude Include="lzodefs.h" />
+    <ClInclude Include="minilzo.h" />
     <ClInclude Include="opcodes.h" />
     <ClInclude Include="goaldis.h" />
   </ItemGroup>

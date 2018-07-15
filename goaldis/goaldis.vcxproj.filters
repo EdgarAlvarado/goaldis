@@ -6,9 +6,15 @@
     <ClCompile Include="machine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meta.cpp" />
+    <ClCompile Include="minilzo.c" />
+    <ClCompile Include="compression.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opcodes.h" />
     <ClInclude Include="goaldis.h" />
+    <ClInclude Include="minilzo.h" />
+    <ClInclude Include="compression.h" />
+    <ClInclude Include="lzoconf.h" />
+    <ClInclude Include="lzodefs.h" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "goaldis.h"
+#include "compression.h"
 
 set<string> seen;
 
@@ -39,6 +40,8 @@ void loadDgo(const char *dgoname, bool shouldDump)
 	fileData = new uint8_t[fileSize];
 	fread(fileData, 1, fileSize, file);
 	fclose(file);
+
+	decompress(&fileData, &fileSize);
 
 	uint32_t headerCount = *(uint32_t *)(fileData + 0);
 
