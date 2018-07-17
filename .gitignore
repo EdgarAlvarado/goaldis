@@ -45,3 +45,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+#VS files
+Debug/
+*/.vs/
+*.pdb
+*.VC.db
+*.VC.VC.opendb
+*.vcxproj.user

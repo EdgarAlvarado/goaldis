@@ -33,17 +33,19 @@ int decompress(uint8_t **fileData, uint32_t *fileSize)
 	{
 		bufferSize = *(uint32_t *)(input); input += 4;
 
-		if (bufferSize > COMPRESSION_BLOCK_SIZE)
+		if (bufferSize < COMPRESSION_BLOCK_SIZE)
 		{
-			delete[] output;
-			return COMPRESSION_INTERNAL_ERROR;
+			int r = lzo1x_decompress(input, bufferSize, out_pos, &out_len, NULL);
+			if (r != LZO_E_OK)
+			{
+				delete[] output;
+				return COMPRESSION_LZO_ERROR;
+			}
 		}
-
-		int r = lzo1x_decompress(input, bufferSize, out_pos, &out_len, NULL);
-		if (r != LZO_E_OK) 
+		else
 		{
-			delete[] output;
-			return COMPRESSION_LZO_ERROR;
+			bufferSize = out_len = COMPRESSION_BLOCK_SIZE;
+			memcpy(out_pos, input, bufferSize);
 		}
 
 		input += bufferSize;
