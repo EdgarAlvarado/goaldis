@@ -31,7 +31,10 @@ int decompress(uint8_t **fileData, uint32_t *fileSize)
 
 	while (true)
 	{
-		bufferSize = *(uint32_t *)(input); input += 4;
+		do
+		{
+			bufferSize = *(uint32_t *)(input); input += 4;
+		} while (!bufferSize);
 
 		if (bufferSize < COMPRESSION_BLOCK_SIZE)
 		{
@@ -51,10 +54,7 @@ int decompress(uint8_t **fileData, uint32_t *fileSize)
 		input += bufferSize;
 		out_pos += out_len;
 		if (out_pos - output == decompressSize) break;
-		while (*input == 0)
-		{
-			input++;
-		}
+		if ((input - (*fileData)) % 4) input += 4 -((input - (*fileData)) % 4);
 	}
 
 	delete[] * fileData;

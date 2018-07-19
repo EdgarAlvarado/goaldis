@@ -82,6 +82,44 @@ void loadDgo(const char *dgoname, bool shouldDump)
 	delete[] fileData;
 }
 
+void decompress(const char *dgoname, const char *outdir)
+{
+	printf("Decompressing %s...\n", dgoname);
+
+	FILE *file = fopen(dgoname, "rb");
+	if (!file)
+	{
+		perror(dgoname);
+		exit(1);
+	}
+
+	uint32_t fileSize;
+	uint8_t *fileData;
+
+	fseek(file, 0, SEEK_END);
+	fileSize = ftell(file);
+	fseek(file, 0, SEEK_SET);
+	fileData = new uint8_t[fileSize];
+	fread(fileData, 1, fileSize, file);
+	fclose(file);
+
+	decompress(&fileData, &fileSize);
+
+	dgo_header *dgo = (dgo_header *)fileData;
+
+	char tmp[256];
+	sprintf(tmp, "%s/%s.bin", outdir, dgo->rootname);
+	printf("%s -> %s\n", dgo->rootname, tmp);
+	FILE *out = fopen(tmp, "wb");
+	if (!out)
+	{
+		perror(tmp);
+		exit(1);
+	}
+	fwrite(fileData, 1, fileSize, out);
+	fclose(out);
+}
+
 void dumpAsm(const char *outdir, MetaGoFile *go)
 {
 	char fileName[1024];
@@ -125,6 +163,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "e.g. goaldis mode C:\\kernel CGO\\KERNEL.CGO\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "    Mode:\n");
+		fprintf(stderr, "        -dcp       Decompress raw binary files\n");
 		fprintf(stderr, "        -bin       Extract raw binary files\n");
 		fprintf(stderr, "        -asm       Disassemble back to MIPS assembly\n");
 		return 1;
@@ -135,6 +174,11 @@ int main(int argc, char *argv[])
 	const char *inDgo = argv[3];
 
 	_mkdir(outdir);
+
+	if (!strcmp(mode, "-dcp")) {
+		decompress(inDgo, outdir);
+		return 0;
+	}
 
 	InitMachine();
 
